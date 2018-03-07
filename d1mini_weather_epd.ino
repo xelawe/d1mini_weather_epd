@@ -14,6 +14,7 @@
 */
 
 
+#define USE_SERIAL Serial
 #include <cy_serdebug.h>
 #include <cy_serial.h>
 
@@ -23,6 +24,8 @@ const char *gc_hostname = "d1minwepd";
 #include "cy_mqtt.h"
 #include "ntp_tool.h"
 #include <Ticker.h>
+
+#include <ESP8266HTTPClient.h>
 
 // Supporting Arduino Forum Topics:
 // Waveshare e-paper displays with SPI: http://forum.arduino.cc/index.php?topic=487007.0
@@ -41,10 +44,10 @@ const char *gc_hostname = "d1minwepd";
 #include GxEPD_BitmapExamples
 
 // FreeFonts from Adafruit_GFX
-#include <Fonts/FreeMonoBold9pt7b.h>
+//#include <Fonts/FreeMonoBold9pt7b.h>
 #include <Fonts/FreeMonoBold12pt7b.h>
-#include <Fonts/FreeMonoBold18pt7b.h>
-#include <Fonts/FreeMonoBold24pt7b.h>
+//#include <Fonts/FreeMonoBold18pt7b.h>
+//#include <Fonts/FreeMonoBold24pt7b.h>
 
 
 #include <GxIO/GxIO_SPI/GxIO_SPI.cpp>
@@ -111,7 +114,7 @@ void callback_mqtt1(char* topic, byte* payload, unsigned int length) {
 
   if ( lv_temp != gv_temp ) {
     gv_temp = lv_temp;
-    gv_ticked = true;
+    // gv_ticked = true;
   }
 
 }
@@ -133,6 +136,8 @@ void setup()
 
   ticker.attach(60, tick);
   gv_ticked = true;
+
+  get_draw_pic();
 }
 
 void loop()
@@ -146,14 +151,20 @@ void loop()
 
   if (gv_ticked == true ) {
 
+
+
     //showBitmapExample();
     //delay(2000);
 
     //drawCornerTest();
     //showFont("FreeMonoBold9pt7b", &FreeMonoBold9pt7b);
+
     showFont("FreeMonoBold12pt7b", &FreeMonoBold12pt7b);
+
     //showFont("FreeMonoBold18pt7b", &FreeMonoBold18pt7b);
     //showFont("FreeMonoBold24pt7b", &FreeMonoBold24pt7b);
+
+    display.update();
     gv_ticked = false;
 
   }
@@ -161,7 +172,6 @@ void loop()
 }
 
 
-#if defined(_GxGDEW042T2_H_) || defined(_GxGDEW042T2_FPU_H_)
 void showBitmapExample()
 {
 
@@ -174,7 +184,7 @@ void showBitmapExample()
   display.update();
 
 }
-#endif
+
 
 
 // utility function for digital clock display: prints leading 0
@@ -190,7 +200,8 @@ String twoDigits(int digits) {
 
 void showFont(const char name[], const GFXfont* f)
 {
-  display.fillScreen(GxEPD_WHITE);
+  //display.fillScreen(GxEPD_WHITE);
+  display.fillRect(0, 0, 400, 100, GxEPD_WHITE);
   display.setTextColor(GxEPD_BLACK);
   display.setFont(f);
   display.setCursor(0, 0);
@@ -218,6 +229,95 @@ void showFont(const char name[], const GFXfont* f)
   display.print("\xB0");
   display.println("C");
 
-  display.update();
+
 
 }
+
+
+void get_draw_pic() {
+  static int x;
+  static int y;
+  x = 0;
+  y = 0;
+
+  display.fillScreen(GxEPD_WHITE);
+
+  HTTPClient http;
+
+  USE_SERIAL.print("[HTTP] begin...\n");
+
+  // configure server and url
+  http.begin("http://93764278.net/ct_epd/?debug=false&display=4.2&content=rep_day_1");
+
+
+  USE_SERIAL.print("[HTTP] GET...\n");
+  // start connection and send HTTP header
+  int httpCode = http.GET();
+  if (httpCode > 0) {
+    // HTTP header has been send and Server response header has been handled
+    USE_SERIAL.printf("[HTTP] GET... code: %d\n", httpCode);
+
+    // file found at server
+    if (httpCode == HTTP_CODE_OK) {
+
+      // get lenght of document (is -1 when Server sends no Content-Length header)
+      int len = http.getSize();
+
+      // create buffer for read
+      uint8_t buff[128] = { 0 };
+
+      // get tcp stream
+      WiFiClient * stream = http.getStreamPtr();
+
+      // read all data from server
+      while (http.connected() && (len > 0 || len == -1)) {
+        // get available data size
+        size_t size = stream->available();
+
+        if (size) {
+          // read up to 128 byte
+          int c = stream->readBytes(buff, ((size > sizeof(buff)) ? sizeof(buff) : size));
+
+          // write it to Serial
+          //USE_SERIAL.write(buff, c);
+
+          for (int j = 0; j < c; j++) {
+
+
+            for (int b = 7; b >= 0; b--) {
+              int bit = bitRead(buff[j], b);
+              if (bit == 1) {
+                display.drawPixel(x, y, GxEPD_BLACK);
+                //Serial.print("X");
+              } else {
+                display.drawPixel(x, y, GxEPD_WHITE);
+                //Serial.print(" ");
+              }
+              x++;
+              if  (x == GxEPD_WIDTH) {
+                y++;
+                x = 0;
+                //Serial.println();
+              }
+
+            }
+          }
+
+          if (len > 0) {
+            len -= c;
+          }
+        }
+        delay(1);
+      }
+
+      USE_SERIAL.println();
+      USE_SERIAL.print("[HTTP] connection closed or file end.\n");
+
+    }
+  } else {
+    USE_SERIAL.printf("[HTTP] GET... failed, error: %s\n", http.errorToString(httpCode).c_str());
+  }
+
+  http.end();
+}
+
