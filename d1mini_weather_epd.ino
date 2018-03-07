@@ -77,11 +77,17 @@ const char* mqtt_subtopic_temp_a = "ATSH28/AUSSEN/TEMP/1/value";
 float gv_temp = 0;
 Ticker ticker;
 boolean gv_ticked = false;
-
+Ticker ticker1;
+boolean gv_ticked1 = false;
 
 void tick()
 {
   gv_ticked = true;
+}
+
+void tick1()
+{
+  gv_ticked1 = true;
 }
 
 void callback_mqtt1(char* topic, byte* payload, unsigned int length) {
@@ -135,9 +141,11 @@ void setup()
   add_subtopic("ATSH28/AUSSEN/TEMP/1/value", callback_mqtt1);
 
   ticker.attach(60, tick);
+  ticker1.attach(600, tick1);
   gv_ticked = true;
+  gv_ticked1 = true;
 
-  get_draw_pic();
+
 }
 
 void loop()
@@ -149,9 +157,18 @@ void loop()
 
   check_time();
 
+
   if (gv_ticked == true ) {
 
+    if (gv_ticked1 == true ) {
 
+
+      get_draw_pic();
+
+      gv_ticked1 = false;
+      display.update();
+
+    }
 
     //showBitmapExample();
     //delay(2000);
@@ -164,7 +181,7 @@ void loop()
     //showFont("FreeMonoBold18pt7b", &FreeMonoBold18pt7b);
     //showFont("FreeMonoBold24pt7b", &FreeMonoBold24pt7b);
 
-    display.update();
+
     gv_ticked = false;
 
   }
@@ -229,7 +246,7 @@ void showFont(const char name[], const GFXfont* f)
   display.print("\xB0");
   display.println("C");
 
-
+  display.updateWindow(0, 0, 400, 100, true);
 
 }
 
