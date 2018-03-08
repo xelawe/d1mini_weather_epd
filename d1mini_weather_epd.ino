@@ -80,7 +80,7 @@ void setup()
   init_mqtt(gv_clientname);
   add_subtopic(mqtt_subtopic_temp_a, callback_mqtt_1);
   add_subtopic(mqtt_subtopic_rain_h24, callback_mqtt_2);
-
+  
   ticker.attach(60, tick);
   ticker1.attach(600, tick1);
   gv_ticked = true;
@@ -109,9 +109,6 @@ void loop()
 
     }
 
-    //showBitmapExample();
-    //delay(2000);
-
     //showFont("FreeMonoBold9pt7b", &FreeMonoBold9pt7b);
 
     print_vals("FreeMonoBold12pt7b", &FreeMonoBold12pt7b);
@@ -122,7 +119,7 @@ void loop()
     gv_ticked = false;
 
   }
-  //delay(10000);
+
 }
 
 void print_vals(const char name[], const GFXfont* f)
@@ -166,6 +163,3 @@ void print_vals(const char name[], const GFXfont* f)
   display.updateWindow(0, 0, 400, 180, true);
 
 }
-
-
-

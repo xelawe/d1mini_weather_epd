@@ -3,16 +3,20 @@ float payload_to_float( byte* payload, unsigned int length) {
   float lv_float = 0;
   float lv_mul = 1;
   float lv_fact = 0;
-  
+  float lv_sign = 1;
+
   for (int i = 0; i < length; i++) {
     DebugPrint((char)payload[i]);
   }
 
   for (int i = 0; i < length; i++) {
-    if ( payload[i] != 46 ) { // "."
+
+    if ( payload[i] != 46 && payload[i] != 45) { // "." //"-"
       lv_float = (lv_float * lv_mul) + payload[i] - 48;
       lv_mul = lv_mul * 10;
       lv_fact = lv_fact * 10;
+    } else if (payload[i] == 45) { //"-"
+      lv_sign = -1;
     } else {
       lv_fact = 1;
     }
@@ -22,9 +26,11 @@ float payload_to_float( byte* payload, unsigned int length) {
     lv_float = lv_float / lv_fact;
   }
 
+  lv_float = lv_float * lv_sign;
+
   DebugPrintln("");
   DebugPrintln(lv_float);
-  
+
   return lv_float;
 }
 
