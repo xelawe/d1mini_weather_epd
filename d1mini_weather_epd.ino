@@ -240,10 +240,9 @@ void showFont(const char name[], const GFXfont* f)
 
   display.drawFastHLine(0, 30, 400, GxEPD_BLACK);
 
-  display.print("Aussentemperatur: ");
-  display.print(gv_temp);
+  display.print("Temp a: ");
+  display.print(gv_temp, 1);
   display.print(" ");
-  display.print("\xB0");
   display.println("C");
 
   display.updateWindow(0, 0, 400, 100, true);
