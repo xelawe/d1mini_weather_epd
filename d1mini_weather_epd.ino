@@ -18,6 +18,7 @@ const char *gc_hostname = "d1minwepd";
 #include "tools.h"
 #include "epd_tool.h"
 #include "http_tool.h"
+#include "bme280_tool.h"
 
 
 const char* mqtt_subtopic_temp_a   = "ATSH28/AUSSEN/TEMP/1/value";
@@ -70,17 +71,41 @@ void setup()
   cy_serial::start(__FILE__);
 
   display.init();
+  display.fillScreen(GxEPD_WHITE);
+  display.setTextColor(GxEPD_BLACK);
+  display.setFont(&FreeMonoBold12pt7b);
+  display.setCursor(0, 0);
+  display.println();
 
+  display.println("Wifi init ...");
+  display.update();
+  delay(500);
   wifi_init(gc_hostname);
+ // display.println("Wifi OK");
+  display.println("connected to " + WiFi.SSID() + " ...yeey");
+
 
   init_ota(gv_clientname);
 
+  display.println("NTP init ...");
+  display.update();
+  delay(500);
   init_time();
+  display.println("NTP OK");
+
 
   init_mqtt(gv_clientname);
   add_subtopic(mqtt_subtopic_temp_a, callback_mqtt_1);
   add_subtopic(mqtt_subtopic_rain_h24, callback_mqtt_2);
-  
+
+  display.println("BME280 init ...");
+  display.update();
+  delay(500);
+  init_bme280();
+  display.println("BME280 OK");
+  display.update();
+  delay(500);
+
   ticker.attach(60, tick);
   ticker1.attach(600, tick1);
   gv_ticked = true;
@@ -97,8 +122,8 @@ void loop()
 
   check_time();
 
-
   if (gv_ticked == true ) {
+    get_bme280();
 
     if (gv_ticked1 == true ) {
 
@@ -109,10 +134,8 @@ void loop()
 
     }
 
-    //showFont("FreeMonoBold9pt7b", &FreeMonoBold9pt7b);
-
     print_vals("FreeMonoBold12pt7b", &FreeMonoBold12pt7b);
-
+    //showFont("FreeMonoBold9pt7b", &FreeMonoBold9pt7b);
     //showFont("FreeMonoBold18pt7b", &FreeMonoBold18pt7b);
     //showFont("FreeMonoBold24pt7b", &FreeMonoBold24pt7b);
 
@@ -148,17 +171,27 @@ void print_vals(const char name[], const GFXfont* f)
   display.drawFastHLine(0, 30, 400, GxEPD_BLACK);
   display.println();
 
-  display.print("Temp a: ");
+  display.print("Temperatur a: ");
   display.print(gv_temp, 1);
-  display.print(" ");
-  display.print("C");
+  display.print(" *C");
   display.println();
 
   display.print("Niederschlag: ");
   display.print(gv_rain_h24, 0);
-  display.print(" ");
-  display.print("mm/d");
+  display.print(" mm/d");
   display.println();
+
+  display.print("Temperatur i: ");
+  display.print(gv_temp_bme280, 1);
+  display.print(" *C");
+  display.println();
+
+  display.print("Lufteuchtigk: ");
+  display.print(gv_humi_bme280, 1);
+  display.print(" %");
+  display.println();
+
+
 
   display.updateWindow(0, 0, 400, 180, true);
 
