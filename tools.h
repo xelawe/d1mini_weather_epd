@@ -11,15 +11,22 @@ float payload_to_float( byte* payload, unsigned int length) {
 
   for (int i = 0; i < length; i++) {
 
-    if ( payload[i] != 46 && payload[i] != 45) { // "." //"-"
-      lv_float = (lv_float * lv_mul) + payload[i] - 48;
-      lv_mul = lv_mul * 10;
-      lv_fact = lv_fact * 10;
-    } else if (payload[i] == 45) { //"-"
-      lv_sign = -1;
-    } else {
-      lv_fact = 1;
+    switch (payload[i]) {
+      case 45: //"-"
+        lv_sign = -1;
+        break;
+
+      case 46: // "."
+        lv_fact = 1;
+        break;
+
+      default:
+        lv_float = (lv_float * lv_mul) + payload[i] - 48;
+        lv_mul = lv_mul * 10;
+        lv_fact = lv_fact * 10;
+        break;
     }
+    
   }
 
   if (lv_fact > 0) {

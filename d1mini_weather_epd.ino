@@ -26,15 +26,11 @@ const char* mqtt_subtopic_rain_h24 = "ATSH28/AUSSEN/RAIN24H/1/value";
 float gv_temp = 0;
 float gv_rain_h24 = 0;
 
-Ticker ticker;
-boolean gv_ticked = false;
+int gv_min = 0;
+
+
 Ticker ticker1;
 boolean gv_ticked1 = false;
-
-void tick()
-{
-  gv_ticked = true;
-}
 
 void tick1()
 {
@@ -106,9 +102,7 @@ void setup()
   display.update();
   delay(500);
 
-  ticker.attach(60, tick);
   ticker1.attach(600, tick1);
-  gv_ticked = true;
   gv_ticked1 = true;
 
 }
@@ -122,7 +116,8 @@ void loop()
 
   check_time();
 
-  if (gv_ticked == true ) {
+  if (gv_min != minute() ) {
+    gv_min = minute();
     get_bme280();
 
     if (gv_ticked1 == true ) {
@@ -138,8 +133,6 @@ void loop()
     //showFont("FreeMonoBold9pt7b", &FreeMonoBold9pt7b);
     //showFont("FreeMonoBold18pt7b", &FreeMonoBold18pt7b);
     //showFont("FreeMonoBold24pt7b", &FreeMonoBold24pt7b);
-
-    gv_ticked = false;
 
   }
 
