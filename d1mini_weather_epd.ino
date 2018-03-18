@@ -77,7 +77,7 @@ void setup()
   display.update();
   delay(500);
   wifi_init(gc_hostname);
- // display.println("Wifi OK");
+  // display.println("Wifi OK");
   display.println("connected to " + WiFi.SSID() + " ...yeey");
 
 
@@ -128,8 +128,8 @@ void loop()
       display.update();
 
     }
-
-    print_vals("FreeMonoBold12pt7b", &FreeMonoBold12pt7b);
+    print_vals();
+    //print_vals("FreeMonoBold12pt7b", &FreeMonoBold12pt7b);
     //showFont("FreeMonoBold9pt7b", &FreeMonoBold9pt7b);
     //showFont("FreeMonoBold18pt7b", &FreeMonoBold18pt7b);
     //showFont("FreeMonoBold24pt7b", &FreeMonoBold24pt7b);
@@ -138,12 +138,13 @@ void loop()
 
 }
 
-void print_vals(const char name[], const GFXfont* f)
+void print_vals()
 {
   //display.fillScreen(GxEPD_WHITE);
   display.fillRect(0, 0, 400, 180, GxEPD_WHITE);
   display.setTextColor(GxEPD_BLACK);
-  display.setFont(f);
+  //display.setFont(f);
+  display.setFont(&FreeMonoBold12pt7b);
   display.setCursor(0, 0);
   display.println();
 
@@ -162,24 +163,37 @@ void print_vals(const char name[], const GFXfont* f)
   display.println();
 
   display.drawFastHLine(0, 30, 400, GxEPD_BLACK);
+
+  display.setFont(&FreeMonoBold9pt7b);
+
+  display.println();
+  
+  display.print("aussen: ");
   display.println();
 
-  display.print("Temperatur a: ");
+  display.setFont(&FreeMonoBold12pt7b);
+
+  display.print("Temp: ");
   display.print(gv_temp, 1);
   display.print(" *C");
-  display.println();
+  //display.println();
 
-  display.print("Niederschlag: ");
+  display.print(" NS: ");
   display.print(gv_rain_h24, 0);
   display.print(" mm/d");
   display.println();
 
-  display.print("Temperatur i: ");
-  display.print(gv_temp_bme280, 1);
-  display.print(" *C");
+  display.setFont(&FreeMonoBold9pt7b);
+  display.print("innen: ");
   display.println();
 
-  display.print("Lufteuchtigk: ");
+  display.setFont(&FreeMonoBold12pt7b);
+  display.print("Temp: ");
+  display.print(gv_temp_bme280, 1);
+  display.print(" *C");
+  //display.println();
+
+  display.print(" LF: ");
   display.print(gv_humi_bme280, 1);
   display.print(" %");
   display.println();

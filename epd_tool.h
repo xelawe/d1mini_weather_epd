@@ -23,7 +23,7 @@
 #include GxEPD_BitmapExamples
 
 // FreeFonts from Adafruit_GFX
-//#include <Fonts/FreeMonoBold9pt7b.h>
+#include <Fonts/FreeMonoBold9pt7b.h>
 #include <Fonts/FreeMonoBold12pt7b.h>
 //#include <Fonts/FreeMonoBold18pt7b.h>
 //#include <Fonts/FreeMonoBold24pt7b.h>
