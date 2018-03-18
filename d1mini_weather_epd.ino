@@ -23,8 +23,10 @@ const char *gc_hostname = "d1minwepd";
 
 const char* mqtt_subtopic_temp_a   = "ATSH28/AUSSEN/TEMP/1/value";
 const char* mqtt_subtopic_rain_h24 = "ATSH28/AUSSEN/RAIN24H/1/value";
+const char* mqtt_subtopic_wind = "ATSH28/AUSSEN/WIND/1/value";
 float gv_temp = 0;
 float gv_rain_h24 = 0;
+float gv_wind = 0;
 
 int gv_min = 0;
 
@@ -62,6 +64,17 @@ void callback_mqtt_2(char* topic, byte* payload, unsigned int length) {
 
 }
 
+void callback_mqtt_3(char* topic, byte* payload, unsigned int length) {
+  DebugPrintln("Callback 3");
+
+  float lv_wind = payload_to_float( payload, length);
+
+  if ( gv_wind != lv_wind ) {
+    gv_wind = lv_wind;
+    // gv_ticked = true;
+  }
+
+}
 void setup()
 {
   cy_serial::start(__FILE__);
@@ -93,7 +106,8 @@ void setup()
   init_mqtt(gv_clientname);
   add_subtopic(mqtt_subtopic_temp_a, callback_mqtt_1);
   add_subtopic(mqtt_subtopic_rain_h24, callback_mqtt_2);
-
+  add_subtopic(mqtt_subtopic_wind, callback_mqtt_3);
+  
   display.println("BME280 init ...");
   display.update();
   delay(500);
@@ -166,8 +180,8 @@ void print_vals()
 
   display.setFont(&FreeMonoBold9pt7b);
 
-  display.println();
-  
+  //display.println();
+
   display.print("aussen: ");
   display.println();
 
@@ -183,11 +197,20 @@ void print_vals()
   display.print(" mm/d");
   display.println();
 
+  display.print("Wind: ");
+  display.print(gv_wind, 0);
+  display.print(" km/h");
+  display.println();
+
   display.setFont(&FreeMonoBold9pt7b);
+
+  display.println();
   display.print("innen: ");
   display.println();
 
+
   display.setFont(&FreeMonoBold12pt7b);
+
   display.print("Temp: ");
   display.print(gv_temp_bme280, 1);
   display.print(" *C");
