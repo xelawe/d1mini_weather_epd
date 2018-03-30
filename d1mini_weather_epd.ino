@@ -139,7 +139,7 @@ void loop()
       get_draw_pic();
 
       gv_ticked1 = false;
-      display.update();
+      //display.update();
 
     }
     print_vals();
@@ -147,7 +147,7 @@ void loop()
     //showFont("FreeMonoBold9pt7b", &FreeMonoBold9pt7b);
     //showFont("FreeMonoBold18pt7b", &FreeMonoBold18pt7b);
     //showFont("FreeMonoBold24pt7b", &FreeMonoBold24pt7b);
-
+      display.update();
   }
 
 }
@@ -221,8 +221,6 @@ void print_vals()
   display.print(" %");
   display.println();
 
-
-
-  display.updateWindow(0, 0, 400, 180, true);
+  //display.updateWindow(0, 0, 400, 180, true);
 
 }
