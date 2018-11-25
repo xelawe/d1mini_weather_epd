@@ -129,7 +129,8 @@ void setup()
   wifi_init(gc_hostname);
   // display.println("Wifi OK");
   display.println("connected to " + WiFi.SSID() + " ...yeey");
-
+  display.println( WiFi.localIP() );
+  //display.println("IP " + WiFi.localIP() );
 
   init_ota(gv_clientname);
 
