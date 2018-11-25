@@ -86,8 +86,12 @@ time_t getNtpTime()
       //return secsSince1900 - 2208988800UL + timeZone * SECS_PER_HOUR;
       // calculate UTC
       time_t lv_time_utc = secsSince1900 - 2208988800UL + timeZone * SECS_PER_HOUR;
+
       // return CET / CEST
-      return  myTZ.toLocal(lv_time_utc, &tcr);
+      //return  myTZ.toLocal(lv_time_utc, &tcr);
+
+      // return UTC
+      return lv_time_utc;
     }
   }
   DebugPrintln("No NTP Response :-(");

@@ -17,7 +17,8 @@ void init_bme280() {
   status = bme.begin(0x76, &Wire);
   if (!status) {
     display.println("Could not find a valid BME280 sensor, check wiring!");
-    while (1){
+    display.update();
+    while (1) {
       delay(100);
     }
   }
