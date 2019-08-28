@@ -12,12 +12,15 @@
   // mapping suggestion from Waveshare SPI e-Paper to Wemos D1 mini
   // BUSY -> D2, RST -> D4, DC -> D3, CS -> D8, CLK -> D5, DIN -> D7, GND -> GND, 3.3V -> 3.3V
 */
+#ifndef EPD_TOOL_H
+#define EPD_TOOL_H
 
 // include library, include base class, make path known
 #include <GxEPD.h>
 
 // select the display class to use, only one
-#include <GxGDEW042T2/GxGDEW042T2.cpp>      // 4.2" b/w
+//#include <GxGDEW042T2/GxGDEW042T2.cpp>      // 4.2" b/w
+#include <GxGDEW042T2/GxGDEW042T2.h>      // 4.2" b/w
 //#include <GxGDEW042Z15/GxGDEW042Z15.cpp>    // 4.2" b/w/r
 
 #include GxEPD_BitmapExamples
@@ -29,8 +32,10 @@
 //#include <Fonts/FreeMonoBold24pt7b.h>
 
 
-#include <GxIO/GxIO_SPI/GxIO_SPI.cpp>
-#include <GxIO/GxIO.cpp>
+//#include <GxIO/GxIO_SPI/GxIO_SPI.cpp>
+#include <GxIO/GxIO_SPI/GxIO_SPI.h>
+//#include <GxIO/GxIO.cpp>
+#include <GxIO/GxIO.h>
 
 #if defined(ESP8266)
 
@@ -124,3 +129,4 @@ void drawPixels(char *data, size_t len, boolean start){
     }
   }
 }
+#endif

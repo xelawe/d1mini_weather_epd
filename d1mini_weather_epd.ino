@@ -176,6 +176,7 @@ void loop()
 
   if (gv_min != minute() ) {
     gv_min = minute();
+
     get_bme280();
 
     if (gv_ticked1 == true ) {
@@ -183,9 +184,9 @@ void loop()
       get_draw_pic();
 
       gv_ticked1 = false;
-      //display.update();
 
     }
+
     print_vals();
     //print_vals("FreeMonoBold12pt7b", &FreeMonoBold12pt7b);
     //showFont("FreeMonoBold9pt7b", &FreeMonoBold9pt7b);
@@ -222,7 +223,17 @@ void print_vals()
   display.print(month(lv_now));
   display.print(".");
   display.print(year(lv_now));
+
+  display.setFont(&FreeMonoBold9pt7b);
   display.print(" ");
+  if ( gv_mqtt_conn_ok == true ) {
+    display.print("=");
+  } else {
+    display.print("!");
+    ESP.restart();
+    delay(2000);
+  }
+
   if ( gv_timestamp_mqtt_ok == true ) {
     time_t lv_time_diff = lv_now_utc - gv_timestamp_mqtt;
     display.print( lv_time_diff);
@@ -272,9 +283,9 @@ void print_vals()
 
   display.println();
   display.print("innen: ");
-//  display.print( lv_now_utc );
-//  display.print( " - " );
-//  display.print( gv_timestamp_mqtt );
+  //  display.print( lv_now_utc );
+  //  display.print( " - " );
+  //  display.print( gv_timestamp_mqtt );
   display.println();
 
 
