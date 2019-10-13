@@ -12,7 +12,7 @@
 const char *gc_hostname = "d1minwepd";
 #include "cy_wifi.h"
 #include "cy_ota.h"
-#include "cy_mqtt.h"
+
 #include "ntp_tool.h"
 #include <Ticker.h>
 #include "tools.h"
@@ -20,13 +20,10 @@ const char *gc_hostname = "d1minwepd";
 #include "http_tool.h"
 #include "bme280_tool.h"
 
+#include "mqtt_tool.h"
 
-const char* mqtt_subtopic_temp_a   = "ATSH28/AUSSEN/TEMP/1/value";
-const char* mqtt_subtopic_rain_h24 = "ATSH28/AUSSEN/RAIN24H/1/value";
-const char* mqtt_subtopic_wind     = "ATSH28/AUSSEN/WIND/1/value";
-const char* mqtt_subtopic_waterl   = "ATSH28/AUSSEN/WATERLEVEL/1/value";
-const char* mqtt_subtopic_date     = "ATSH28/DATE/full";
-const char* mqtt_subtopic_timestamp = "ATSH28/DATE/timestamp";
+
+
 
 float gv_temp = 0;
 float gv_rain_h24 = 0;
@@ -144,7 +141,8 @@ void setup()
   // Allocate the correct amount of memory for the payload copy
   //  gv_payload_date = (byte*)malloc(MQTT_MAX_PACKET_SIZE);
 
-  init_mqtt(gv_clientname);
+  //init_mqtt(gv_clientname);
+  init_mqtt_local();
   add_subtopic(mqtt_subtopic_temp_a, callback_mqtt_1);
   add_subtopic(mqtt_subtopic_rain_h24, callback_mqtt_2);
   add_subtopic(mqtt_subtopic_wind, callback_mqtt_3);
@@ -171,6 +169,10 @@ void loop()
   check_ota();
 
   check_mqtt();
+  if ( gv_mqtt_conn_ok != true ) {
+    ESP.restart();
+    delay(2000);
+  }
 
   check_time();
 
@@ -178,6 +180,8 @@ void loop()
     gv_min = minute();
 
     get_bme280();
+    pub_vals();
+
 
     if (gv_ticked1 == true ) {
 
@@ -230,8 +234,6 @@ void print_vals()
     display.print("=");
   } else {
     display.print("!");
-    ESP.restart();
-    delay(2000);
   }
 
   if ( gv_timestamp_mqtt_ok == true ) {
