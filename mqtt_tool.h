@@ -9,8 +9,9 @@ float gv_waterl = 0;
 
 time_t gv_timestamp_mqtt;
 boolean gv_timestamp_mqtt_ok = false;
+
 byte* gv_payload_txt1;
-unsigned int gv_payload_txt1_length = 0;
+unsigned int gv_payload_txt1_length;
 
 const char* mqtt_subtopic_temp_a   = "ATSH28/AUSSEN/TEMP/1/value";
 const char* mqtt_subtopic_rain_h24 = "ATSH28/AUSSEN/RAIN24H/1/value";
@@ -106,6 +107,7 @@ void init_mqtt_local() {
 
   // Allocate the correct amount of memory for the payload copy
   gv_payload_txt1 = (byte*)malloc(MQTT_MAX_PACKET_SIZE);
+  gv_payload_txt1_length = 0;
 
   init_mqtt(gv_clientname);
 

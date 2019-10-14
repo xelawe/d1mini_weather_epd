@@ -226,6 +226,7 @@ void print_vals()
     for (int i = 0; i < gv_payload_txt1_length; i++) {
       display.print((char)gv_payload_txt1[i]);
     }
+    display.println();
   }
 
   //display.updateWindow(0, 0, 400, 180, true);
