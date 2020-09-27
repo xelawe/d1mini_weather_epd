@@ -10,10 +10,17 @@
   // Good Dispay ePaper for Arduino : https://forum.arduino.cc/index.php?topic=436411.0
 
   // mapping suggestion from Waveshare SPI e-Paper to Wemos D1 mini
-  // BUSY -> D2, RST -> D4, DC -> D3, CS -> D8, CLK -> D5, DIN -> D7, GND -> GND, 3.3V -> 3.3V
+  // BUSY -> D2, 
+  // RST -> D4, 
+  // DC -> D3, 
+  // CS -> D8, 
+  // CLK -> D5, 
+  // DIN -> D7, 
+  // GND -> GND, 
+  // 3.3V -> 3.3V
 */
-#ifndef EPD_TOOL_H
-#define EPD_TOOL_H
+//#ifndef EPD_TOOL_H
+//#define EPD_TOOL_H
 
 // include library, include base class, make path known
 #include <GxEPD.h>
@@ -26,8 +33,11 @@
 #include GxEPD_BitmapExamples
 
 // FreeFonts from Adafruit_GFX
-#include <Fonts/FreeMonoBold9pt7b.h>
+//#include <Fonts/FreeMonoBold9pt7b.h>
 #include <Fonts/FreeMonoBold12pt7b.h>
+#include <Fonts/FreeSansBold12pt7b.h>
+//#include <Fonts/FreeSans9pt7b.h>
+#include <Fonts/FreeSansBold9pt7b.h>
 //#include <Fonts/FreeMonoBold18pt7b.h>
 //#include <Fonts/FreeMonoBold24pt7b.h>
 
@@ -57,76 +67,4 @@ GxEPD_Class display(io); // default selection of D4(=2), D2(=4)
 #endif
 bool hasRed = false;
 
-void showBitmapExample()
-{
-
-  //display.drawExampleBitmap(BitmapExample1, sizeof(BitmapExample1));
-  //delay(2000);
-  display.drawExampleBitmap(BitmapExample2, sizeof(BitmapExample2));
-  delay(5000);
-  //display.fillScreen(GxEPD_WHITE);
-  //display.drawExampleBitmap(BitmapExample1, 0, 0, GxEPD_WIDTH, GxEPD_HEIGHT, GxEPD_BLACK);
-  display.update();
-
-}
-
-
-/** Draw the pixels to the screen
- *  
- *  @param  char *data    A char array
- *  @param  size_t len    Length of the char array
- *  @param  boolean start True if the begin of a new screen
- * 
- */
-void drawPixels(char *data, size_t len, boolean start){
-  static int x;
-  static int y;
-  if (start){
-    x = 0;
-    y = 0;
-    // Not required
-    //display.eraseDisplay(true);
-  }
-
-  Serial.println(String("Printing ") + len + " Bytes to the screen");
-  for (size_t i=0; i<len; i++){
-
-    if (hasRed == true) {
-      for (int b = 7; b >= 0; b -= 2) {
-        int bit = bitRead(data[i], b);
-        int bit2 = bitRead(data[i], b - 1);
-
-        if ((bit == 1) && (bit2 == 1)) {
-          display.drawPixel(x, y, GxEPD_BLACK);
-        } else {
-          if ((bit == 0) && (bit2 == 1)) {
-            display.drawPixel(x, y, GxEPD_RED);
-          } else {
-            display.drawPixel(x, y, GxEPD_WHITE);
-          }
-        }
-        x++;
-
-        if  (x == GxEPD_WIDTH) {
-          y++;
-          x = 0;
-        }
-      }
-    } else {  // hasRead
-      for (int b = 7; b >= 0; b--) {
-        int bit = bitRead(data[i], b);
-        if (bit == 1) {
-          display.drawPixel(x, y, GxEPD_BLACK);
-        } else {
-          display.drawPixel(x, y, GxEPD_WHITE);
-        }
-        x++;
-        if  (x == GxEPD_WIDTH) {
-          y++;
-          x = 0;
-        }
-      }
-    }
-  }
-}
-#endif
+//#endif
