@@ -11,6 +11,7 @@ void init_bme280() {
   // default settings
   // (you can also pass in a Wire library object like &Wire2)
   Wire.begin(12, 5);
+  
   status = bme.begin(0x76, &Wire);
   if (!status) {
     display.println("Could not find a valid BME280 sensor!");
