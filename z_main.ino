@@ -1,6 +1,6 @@
 void setup()
 {
-  cy_serial::start(__FILE__);
+  init_ser();
 
   display.init();
   display.fillScreen(GxEPD_WHITE);
@@ -31,12 +31,13 @@ void setup()
   init_mqtt_local();
 
   init_bme280();
-
   delay(500);
 
 
   init_bh1750( );
+  delay(500);
 
+  init_pcf8574();
   delay(500);
 
   ticker1.attach(600, tick1);
@@ -57,6 +58,8 @@ void loop()
   }
 
   check_time();
+
+  check_pcf8574();
 
   if (gv_min != minute() ) {
     gv_min = minute();

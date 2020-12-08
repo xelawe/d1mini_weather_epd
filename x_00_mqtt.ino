@@ -1,4 +1,4 @@
-#include "cy_mqtt.h"
+#include "cy_mqtt_v1.h"
 
 
 float gv_temp = 0;
@@ -30,3 +30,7 @@ const char* mqtt_subtopic_txt1;
 const char* mqtt_pubtopic_brght_i_suff = "tele/brightness";
 String mqtt_pubtopic_brght_i_s;
 const char* mqtt_pubtopic_brght_i;
+
+const char* mqtt_pubtopic_btn1_suff = "tele/Button1";
+String mqtt_pubtopic_btn1_s;
+const char* mqtt_pubtopic_btn1;

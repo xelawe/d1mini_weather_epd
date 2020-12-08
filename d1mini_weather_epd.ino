@@ -30,3 +30,8 @@ void tick1()
   gv_ticked1 = true;
 }
 
+
+void init_ser(){
+    cy_serial::start(__FILE__);
+}
+

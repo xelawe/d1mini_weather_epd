@@ -9,15 +9,7 @@
   // Waveshare e-paper displays with SPI: http://forum.arduino.cc/index.php?topic=487007.0
   // Good Dispay ePaper for Arduino : https://forum.arduino.cc/index.php?topic=436411.0
 
-  // mapping suggestion from Waveshare SPI e-Paper to Wemos D1 mini
-  // BUSY -> D2, 
-  // RST -> D4, 
-  // DC -> D3, 
-  // CS -> D8, 
-  // CLK -> D5, 
-  // DIN -> D7, 
-  // GND -> GND, 
-  // 3.3V -> 3.3V
+
 */
 //#ifndef EPD_TOOL_H
 //#define EPD_TOOL_H
@@ -60,10 +52,20 @@
 //static const uint8_t D6   = 12;
 //static const uint8_t D5   = 14;
 
+  // mapping suggestion from Waveshare SPI e-Paper to Wemos D1 mini
+  // BUSY -> D6 (GPIO12) <<- MISO (war vorher D2 (GPIO4) <<-SDA )
+  // RST  -> D4 (GPIO2) <<- LED
+  // DC   -> D3 (GPIO0)
+  // CS   -> D8 (GPIO15, SS)
+  // CLK  -> D5 
+  // DIN  -> D7 
+  // GND  -> GND 
+  // 3.3V -> 3.3V
+  
 // GxIO_SPI(SPIClass& spi, int8_t cs, int8_t dc, int8_t rst = -1, int8_t bl = -1);
 GxIO_Class io(SPI, SS, 0, 2); // arbitrary selection of D3(=0), D4(=2), selected for default of GxEPD_Class
 // GxGDEP015OC1(GxIO& io, uint8_t rst = 2, uint8_t busy = 4);
-GxEPD_Class display(io); // default selection of D4(=2), D2(=4)
+GxEPD_Class display(io, 2, 12); // default selection of D4(=2), D2(=4) --> D4(=2), D6 (=12)
 #endif
 bool hasRed = false;
 

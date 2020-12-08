@@ -77,6 +77,12 @@ void init_mqtt_local() {
   mqtt_pubtopic_brght_i = (char*) mqtt_pubtopic_brght_i_s.c_str();
   DebugPrintln(mqtt_pubtopic_brght_i);
 
+  mqtt_pubtopic_btn1_s += gv_clientname;
+  mqtt_pubtopic_btn1_s += '/';
+  mqtt_pubtopic_btn1_s += mqtt_pubtopic_btn1_suff;
+  mqtt_pubtopic_btn1 = (char*) mqtt_pubtopic_btn1_s.c_str();
+  DebugPrintln(mqtt_pubtopic_btn1);
+
   mqtt_subtopic_txt1_s += gv_clientname;
   mqtt_subtopic_txt1_s += '/';
   mqtt_subtopic_txt1_s += mqtt_subtopic_txt1_suff;
@@ -112,3 +118,15 @@ void pub_vals() {
     client.publish(mqtt_pubtopic_brght_i, buffer, true);
   }
 }
+
+
+void pub_btn1(boolean state) {
+  int state_int;
+  if (state == true) {
+    client.publish(mqtt_pubtopic_btn1, "OFF", false);
+  } else {
+    client.publish(mqtt_pubtopic_btn1, "ON", false);
+  }
+
+}
+
