@@ -34,3 +34,7 @@ const char* mqtt_pubtopic_brght_i;
 const char* mqtt_pubtopic_btn1_suff = "tele/Button1";
 String mqtt_pubtopic_btn1_s;
 const char* mqtt_pubtopic_btn1;
+
+const char* mqtt_pubtopic_pir1_suff = "tele/PIR1";
+String mqtt_pubtopic_pir1_s;
+const char* mqtt_pubtopic_pir1;
