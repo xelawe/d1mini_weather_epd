@@ -79,11 +79,11 @@ void print_vals()
   display.print(" WS: ");
   display.print(gv_waterl, 0);
   display.print(" mm");
-  display.println();
+
 
   //display.setFont(&FreeMonoBold9pt7b);
   display.setFont(&FreeSansBold9pt7b);
-
+  display.println();
 
   display.println();
   display.print("innen: ");
