@@ -1,4 +1,4 @@
-#include <ESP8266HTTPClient.h>
+
 
 void get_draw_pic() {
 
@@ -9,7 +9,7 @@ void get_draw_pic() {
   USE_SERIAL.print("[HTTP] begin...\n");
 
   // configure server and url
-  http.begin("http://93764278.net/ct_epd/?debug=false&display=4.2&content=rep_day_1");
+  http.begin(wifi_client, "http://93764278.net/ct_epd/?debug=false&display=4.2&content=rep_day_1");
 
 
   USE_SERIAL.print("[HTTP] GET...\n");
@@ -63,4 +63,3 @@ void get_draw_pic() {
 
   http.end();
 }
-

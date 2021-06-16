@@ -26,6 +26,9 @@ void setup()
   init_time();
   display.println("NTP OK");
 
+  //display.println(GxEPD_WIDTH);
+  //display.println(GxEPD_HEIGHT);
+
 
   //init_mqtt(gv_clientname);
   init_mqtt_local();
@@ -39,6 +42,11 @@ void setup()
 
   init_pcf8574();
   delay(500);
+
+  display.fillRect(0, 0, GxEPD_WIDTH, GxEPD_HEIGHT, GxEPD_WHITE);
+  display.update();
+
+  display.updateWindow(0, 0, GxEPD_WIDTH, GxEPD_HEIGHT, false);
 
   ticker1.attach(600, tick1);
   gv_ticked1 = true;
@@ -71,7 +79,9 @@ void loop()
 
     if (gv_ticked1 == true ) {
 
+      //display.fillRect(0, 0, GxEPD_WIDTH, GxEPD_HEIGHT, GxEPD_WHITE);
       get_draw_pic();
+      //display.updateWindow(0, 0, GxEPD_WIDTH, GxEPD_HEIGHT, true);
 
       gv_ticked1 = false;
 
@@ -82,7 +92,10 @@ void loop()
     //showFont("FreeMonoBold9pt7b", &FreeMonoBold9pt7b);
     //showFont("FreeMonoBold18pt7b", &FreeMonoBold18pt7b);
     //showFont("FreeMonoBold24pt7b", &FreeMonoBold24pt7b);
+
     display.update();
+
+
   }
 
 }

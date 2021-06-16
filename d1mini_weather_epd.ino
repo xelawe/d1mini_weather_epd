@@ -10,7 +10,7 @@
 #include <cy_serial.h>
 
 const char *gc_hostname = "d1minwepd";
-#include "cy_wifi.h"
+#include "cy_wifi_v1.h"
 #include "cy_ota.h"
 
 #include <Ticker.h>
@@ -34,4 +34,3 @@ void tick1()
 void init_ser(){
     cy_serial::start(__FILE__);
 }
-

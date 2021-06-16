@@ -133,18 +133,18 @@ void print_vals()
 
 
 
-void showBitmapExample()
-{
-
-  //display.drawExampleBitmap(BitmapExample1, sizeof(BitmapExample1));
-  //delay(2000);
-  display.drawExampleBitmap(BitmapExample2, sizeof(BitmapExample2));
-  delay(5000);
-  //display.fillScreen(GxEPD_WHITE);
-  //display.drawExampleBitmap(BitmapExample1, 0, 0, GxEPD_WIDTH, GxEPD_HEIGHT, GxEPD_BLACK);
-  display.update();
-
-}
+//void showBitmapExample()
+//{
+//
+//  //display.drawExampleBitmap(BitmapExample1, sizeof(BitmapExample1));
+//  //delay(2000);
+//  display.drawExampleBitmap(BitmapExample2, sizeof(BitmapExample2));
+//  delay(5000);
+//  //display.fillScreen(GxEPD_WHITE);
+//  //display.drawExampleBitmap(BitmapExample1, 0, 0, GxEPD_WIDTH, GxEPD_HEIGHT, GxEPD_BLACK);
+//  display.update();
+//
+//}
 
 
 /** Draw the pixels to the screen
