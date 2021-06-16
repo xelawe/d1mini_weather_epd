@@ -2,6 +2,8 @@ void setup()
 {
   init_ser();
 
+
+
   display.init();
   display.fillScreen(GxEPD_WHITE);
   display.setTextColor(GxEPD_BLACK);
