@@ -14,6 +14,8 @@ const char *gc_hostname = "d1minwepd";
 
 #include <Ticker.h>
 
+char *gv_main_file = __FILE__;
+
 int gv_min = 0;
 
 Ticker ticker1;
@@ -24,7 +26,6 @@ void ICACHE_RAM_ATTR tick1()
   gv_ticked1 = true;
 }
 
-
-void init_ser(){
-    cy_serial::start(__FILE__);
+char *get_main_file() {
+  return gv_main_file;
 }

@@ -1,5 +1,8 @@
 void print_vals()
 {
+
+  int lv_line_offset = 5;
+
   //display.fillScreen(GxEPD_WHITE);
   display.fillRect(0, 0, 400, 180, GxEPD_WHITE);
   display.setTextColor(GxEPD_BLACK);
@@ -44,9 +47,12 @@ void print_vals()
       display.print("=");
     }
   }
+
+  display.drawFastHLine(0, display.getCursorY() + lv_line_offset, 400, GxEPD_BLACK);
   display.println();
 
-  display.drawFastHLine(0, 30, 400, GxEPD_BLACK);
+  //display.drawFastHLine(0, 30, 400, GxEPD_BLACK);
+
 
   //display.setFont(&FreeMonoBold9pt7b);
   display.setFont(&FreeSansBold9pt7b);
@@ -66,6 +72,7 @@ void print_vals()
   display.print(" *C");
   //display.println();
 
+  display.setCursor(200, display.getCursorY());
   display.print(" NS: ");
   display.print(gv_rain_h24, 0);
   display.print(" mm/d");
@@ -76,22 +83,27 @@ void print_vals()
   display.print(" km/h");
   //display.println();
 
+  display.setCursor(200, display.getCursorY());
   display.print(" WS: ");
   display.print(gv_waterl, 0);
   display.print(" mm");
 
+  display.drawFastHLine(0, display.getCursorY() + lv_line_offset, 400, GxEPD_BLACK);
 
   //display.setFont(&FreeMonoBold9pt7b);
   display.setFont(&FreeSansBold9pt7b);
   display.println();
 
-  display.println();
+
+
+  //display.println();
   display.print("innen: ");
   //  display.print( lv_now_utc );
   //  display.print( " - " );
   //  display.print( gv_timestamp_mqtt );
 
   if ( gv_bh1750_ok == true ) {
+      display.setCursor(200, display.getCursorY());
     display.print("Brght: ");
     display.print(gv_lux, 1);
     display.print(" lx");
@@ -112,13 +124,15 @@ void print_vals()
 
     //display.println();
 
+    display.setCursor(200, display.getCursorY());
     display.print(" LF: ");
     display.print(gv_humi_bme280, 1);
     display.setFont(&FreeSansBold9pt7b);
     display.print(" %");
     display.println();
   }
-
+  display.drawFastHLine(0, display.getCursorY() + lv_line_offset, 400, GxEPD_BLACK);
+  
   display.setFont(&FreeSansBold9pt7b);
   if (gv_payload_txt1_length > 0 ) {
     for (int i = 0; i < gv_payload_txt1_length; i++) {
@@ -126,6 +140,9 @@ void print_vals()
     }
     display.println();
   }
+
+
+
 
   //display.updateWindow(0, 0, 400, 180, true);
 
@@ -188,7 +205,7 @@ void drawPixels(char *data, size_t len, boolean start) {
           x = 0;
         }
       }
-    } else {  // hasRead
+    } else {  // hasRed
       for (int b = 7; b >= 0; b--) {
         int bit = bitRead(data[i], b);
         if (bit == 1) {

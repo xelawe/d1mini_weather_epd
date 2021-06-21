@@ -1,7 +1,7 @@
 void setup()
 {
-  init_ser();
-
+  //init_ser();
+  cy_serial::start(get_main_file());
 
 
   display.init();
@@ -10,6 +10,9 @@ void setup()
   display.setFont(&FreeSansBold9pt7b);
   display.setCursor(0, 0);
   display.println();
+
+  display.println(String(__DATE__) + ", " + String(__TIME__) + " " + String(get_main_file()));
+  display.update();
 
   display.println("Wifi init ...");
   display.update();

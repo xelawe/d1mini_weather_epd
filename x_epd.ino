@@ -18,7 +18,6 @@
 #include <GxEPD.h>
 
 // select the display class to use, only one
-//#include <GxGDEW042T2/GxGDEW042T2.cpp>      // 4.2" b/w
 #include <GxGDEW042T2/GxGDEW042T2.h>      // 4.2" b/w
 //#include <GxGDEW042Z15/GxGDEW042Z15.cpp>    // 4.2" b/w/r
 
